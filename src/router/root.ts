@@ -1,11 +1,18 @@
-import Layout from '../components/Layout.vue'
+import Home from '../view/Home.vue'
 export default [
   {
     path: '/',
-    component: Layout
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/singer',
+    name: 'singer',
+    component: () => import('../view/singer.vue')
+  },
+  {
+    path: '/song',
+    name: 'song',
+    component: () => import('../view/Song.vue')
   }
-  // {
-  //   path: 'shi',
-  //   component: () => import('@/pages/shi/index.vue'),
-  // },
-];
+]

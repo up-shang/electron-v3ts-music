@@ -1,52 +1,78 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-defineProps<{ msg: string }>()
-
-const count = ref(0)
-</script>
-
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="common-layout">
+    <el-container>
+      <el-header height="50px" class="header">
+        <div class="header main">
+          <el-button link @click="handleLink('home')">个性推荐</el-button>
+          <el-button link @click="handleLink('song')">
+            歌单
+          </el-button>
+          <el-button link>排行榜</el-button>
+          <el-button link @click="handleLink('singer')">歌手</el-button>
+          <el-button link>最新音乐</el-button>
+        </div>
+        <div class="header right">
+          <el-input v-model="search" size="small" placeholder="搜索" :prefix-icon="Search" />
+          <el-image class="avtar" :src="avtar" fit="contain">
+            <template #placeholder>
+              <div class="image-slot">Loading</div>
+            </template>
+          </el-image>
+        </div>
 
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
-
-  <p>See <code>README.md</code> for more information.</p>
-
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Docs
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
-<style scoped>
-a {
-  color: #42b983;
+<script setup lang="ts">
+import { Search } from '@element-plus/icons-vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const avtar = ref<string>('')
+const search = ref<string>('')
+
+function handleLink(param: string) {
+  router.push({ name: param })
+}
+// defineProps<{ msg: string }>()
+</script>
+
+<style lang="scss" scoped>
+.common-layout {
+  width: 100%;
 }
 
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
+:deep(.el-input__wrapper) {
+  border-radius: 12px;
 }
 
-code {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgb(249, 247, 247);
+
+  &.main {
+    margin-left: 100px;
+  }
+
+  &.right {
+    width: 200px;
+    margin-left: auto;
+    margin-right: 10px;
+
+    .avtar {
+      width: 30px;
+      height: 24px;
+      border: 1px solid white;
+      border-radius: 24px;
+      margin-left: 15px;
+    }
+  }
 }
 </style>

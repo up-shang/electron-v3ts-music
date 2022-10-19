@@ -3,6 +3,7 @@ import routes from './root';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
+NProgress.configure({ showSpinner: false })
 //导入生成的路由数据
 const router = createRouter({
   history: createWebHashHistory(),
