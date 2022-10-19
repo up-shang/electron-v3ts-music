@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
+import piniaStore from './store'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 /**
  * If you enables use of Node.js API in the Renderer-process
@@ -8,9 +12,11 @@ import App from './App.vue'
  * ```
  * @see - https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#electron-renderervite-serve
  */
-// import './samples/node-api'
 
 createApp(App)
+  .use(router)
+  .use(piniaStore)
+  .use(ElementPlus)
   .mount('#app')
   .$nextTick(() => {
     postMessage({ payload: 'removeLoading' }, '*')
