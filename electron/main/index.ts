@@ -33,6 +33,10 @@ if (!app.requestSingleInstanceLock()) {
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null
+
+const remote = require("@electron/remote/main")
+remote.initialize()
+
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
 const url = process.env.VITE_DEV_SERVER_URL
@@ -73,6 +77,8 @@ async function createWindow() {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
   })
+  // app ready使用remote模块
+  remote.enable(win.webContents)
 }
 
 app.whenReady().then(createWindow)
