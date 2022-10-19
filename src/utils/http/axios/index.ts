@@ -12,7 +12,8 @@ axios.defaults.withCredentials = false;
 axios.defaults.headers.post['Access-Control-Allow-Origin-Type'] = '*';
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.BASE_URL + '',
+  // baseURL: import.meta.env.BASE_URL + '',
+  baseURL: 'http://47.95.209.247:3000',
   // transformRequest: [
   //   function (data) {
   //     //由于使用的 form-data传数据所以要格式化
@@ -70,9 +71,9 @@ const request = <T = any>(config: AxiosRequestConfig): Promise<T> => {
     axiosInstance.request<any, AxiosResponse<IResponse>>(conf).then((res: AxiosResponse<IResponse>) => {
       // resolve(res as unknown as Promise<T>);
       const {
-        data: { result },
+        data
       } = res;
-      resolve(result as T);
+      resolve(data as T);
     });
   });
 };

@@ -1,15 +1,26 @@
 <template>
-  <span>首页</span>
+  <el-carousel :interval="4000" type="card" height="160px">
+    <el-carousel-item v-for="item in banner?.banners" :key="item">
+      <el-image :src="item.imageUrl"></el-image>
+    </el-carousel-item>
+  </el-carousel>
 </template>
 
-<script setup lang="ts">
-import { Search } from '@element-plus/icons-vue'
-import { ref } from 'vue'
-// defineProps<{ msg: string }>()
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { getBanner, BannerInfo } from '../api/home'
 
-// const count = ref(0)
+let banner = ref<BannerInfo>()
+async function getBannerInfo() {
+  banner.value = await getBanner()
+}
+onMounted(async () => {
+  await getBannerInfo()
+})
+
 </script>
-
-<style lang="scss" scoped>
-
+<style scoped>
+.el-carousel__item {
+  border-radius: 8px;
+}
 </style>
