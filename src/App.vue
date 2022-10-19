@@ -6,14 +6,14 @@ import HelloWorld from './components/HelloWorld.vue'
 
 <template>
   <div class="logo-box">
-    <img class="logo vite" src="./assets/vite.svg" >
-    <img class="logo electron" src="./assets/electron.svg" >
-    <img class="logo vue" src="./assets/vue.svg" >
+    <img class="logo vite" src="./assets/vite.svg">
+    <img class="logo electron" src="./assets/electron.svg">
+    <img class="logo vue" src="./assets/vue.svg">
   </div>
   <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
   <div class="static-public">
     Place static files into the <code>/public</code> folder
-    <img style="width:77px;" :src="'./node.png'" >
+    <img style="width:77px;" :src="'./node.png'">
   </div>
 </template>
 
@@ -24,7 +24,8 @@ import HelloWorld from './components/HelloWorld.vue'
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  user-select: none;
+  /* margin-top: 60px; */
 }
 
 .logo-box {

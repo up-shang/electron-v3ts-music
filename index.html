@@ -13,5 +13,35 @@
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
+<script>
+  function makeDraggable(element) {
+    element = document.querySelector(element);
+    let dragging = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    element.addEventListener('mousedown', (e) => {
+      dragging = true;
+      const { pageX, pageY } = e;
+      mouseX = pageX;
+      mouseY = pageY;
+    });
+    window.addEventListener('mouseup', () => {
+      dragging = false;
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (dragging) {
+        const { pageX, pageY } = e;
+        const remote = require('@electron/remote')
+        const win = remote.getCurrentWindow();
+        const pos = win.getPosition();
+        pos[0] = pos[0] + pageX - mouseX;
+        pos[1] = pos[1] + pageY - mouseY;
+        win.setPosition(pos[0], pos[1], true);
+      }
+    });
+  }
+  makeDraggable('body')
+
+</script>
 
 </html>
