@@ -34,8 +34,8 @@ if (!app.requestSingleInstanceLock()) {
 
 let win: BrowserWindow | null = null
 
-const remote = require("@electron/remote/main")
-remote.initialize()
+// const remote = require("@electron/remote/main")
+// remote.initialize()
 
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
@@ -78,7 +78,7 @@ async function createWindow() {
     return { action: 'deny' }
   })
   // app ready使用remote模块
-  remote.enable(win.webContents)
+  // remote.enable(win.webContents)
 }
 
 app.whenReady().then(createWindow)
