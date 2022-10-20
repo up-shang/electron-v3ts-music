@@ -8,7 +8,7 @@ export default [
   {
     path: '/singer',
     name: 'singer',
-    component: () => import('../view/singer.vue')
+    component: () => import('../view/login.vue')
   },
   {
     path: '/song',

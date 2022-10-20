@@ -13,11 +13,9 @@
         </div>
         <div class="header right">
           <el-input v-model="search" size="small" placeholder="搜索" :prefix-icon="Search" />
-          <el-image class="avtar" :src="avtar" fit="contain">
-            <template #placeholder>
-              <div class="image-slot">Loading</div>
-            </template>
-          </el-image>
+          <div class="avtar" @click="handleLogin">
+            <el-image style="border-radius: 24px;" :src="userStore.avatar" fit="contain"></el-image>
+          </div>
         </div>
 
       </el-header>
@@ -25,21 +23,40 @@
         <router-view></router-view>
       </el-main>
     </el-container>
+    <el-dialog v-model="userVisible" :show-close="false">
+      <user ref="userInfo"></user>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import user from '../view/login.vue'
+import { useUserStore } from '../store'
+
+const userStore = useUserStore()
+
 const router = useRouter()
-const avtar = ref<string>('')
 const search = ref<string>('')
+let userInfo = ref()
+let userVisible = ref<boolean>(false)
 
 function handleLink(param: string) {
   router.push({ name: param })
 }
-// defineProps<{ msg: string }>()
+/**
+ * 触发二维码扫码登录
+ */
+function handleLogin() {
+  // userStore.$patch({ avatar: 'https://p2.music.126.net/lhdp6FTOqNb07O7iJhjIFw==/19118308184364461.jpg' })
+  userVisible.value = true
+  nextTick(async () => {
+    await userInfo.value.login()
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -67,11 +84,10 @@ function handleLink(param: string) {
     margin-right: 10px;
 
     .avtar {
-      width: 30px;
-      height: 24px;
-      border: 1px solid white;
-      border-radius: 24px;
+      width: 36px;
+      height: 30px;
       margin-left: 15px;
+      cursor: pointer;
     }
   }
 }

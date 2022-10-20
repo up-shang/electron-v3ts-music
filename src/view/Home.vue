@@ -43,7 +43,6 @@ async function getPersonalizedInfo() {
     limit: 12
   }
   personalized.value = await getPersonalized(params)
-  console.log(personalized, 'person')
 }
 onMounted(async () => {
   await getBannerInfo()
