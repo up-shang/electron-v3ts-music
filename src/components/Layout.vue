@@ -21,7 +21,7 @@
         </div>
 
       </el-header>
-      <el-main>
+      <el-main class="main">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -74,5 +74,9 @@ function handleLink(param: string) {
       margin-left: 15px;
     }
   }
+}
+
+.el-main {
+  height: calc(100vh - 50px);
 }
 </style>
