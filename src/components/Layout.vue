@@ -13,8 +13,8 @@
         </div>
         <div class="header right">
           <el-input v-model="search" size="small" placeholder="搜索" :prefix-icon="Search" />
-          <div class="avtar" @click="handleLogin">
-            <el-image style="border-radius: 24px;" :src="userStore.avatar" fit="contain"></el-image>
+          <div @click="handleLogin">
+            <el-image class="avtar" :src="userStore.avatar" fit="contain"></el-image>
           </div>
         </div>
 
@@ -85,8 +85,10 @@ function handleLogin() {
 
     .avtar {
       width: 36px;
-      height: 30px;
+      height: 36px;
       margin-left: 15px;
+      border: 1px solid white;
+      border-radius: 24px;
       cursor: pointer;
     }
   }
