@@ -23,7 +23,7 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <el-dialog v-model="userVisible" :show-close="false">
+    <el-dialog v-model="userVisible" :show-close="false" @close="handleClearTimer">
       <user ref="userInfo"></user>
     </el-dialog>
 
@@ -56,7 +56,14 @@ function handleLogin() {
     await userInfo.value.login()
   })
 }
-
+/**
+ * 关闭弹窗，清除计时器
+ */
+function handleClearTimer() {
+  nextTick(async () => {
+    await userInfo.value.clearTimer()
+  })
+}
 onMounted(async () => {
   if (localStorage.getItem('cookie')) {
     await userStore.getUserAccountInfo({ cookie: localStorage.getItem('cookie') })

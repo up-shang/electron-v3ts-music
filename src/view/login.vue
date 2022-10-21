@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { loginCheck, loginQrKey, loginQr, loginStatus } from '../api/user'
 import { useUserStore } from '../store'
 
@@ -17,6 +17,7 @@ const userStore = useUserStore()
 
 let qrImg = ref<string>('')
 let qrInfo = ref<string>('')
+let timer: any
 /**
  * 扫码检测登录状态
  */
@@ -38,7 +39,6 @@ async function getLoginStatus(cookie = '') {
  * 扫码登录
  */
 async function login() {
-  let timer: any
   const cookie = localStorage.getItem('cookie')
   const resKey = await loginQrKey({ timestamp: Date.now() })
   const key = resKey.data.unikey
@@ -64,7 +64,10 @@ async function login() {
     }
   }, 3000)
 }
-defineExpose({ login })
+function clearTimer() {
+  clearInterval(timer)
+}
+defineExpose({ login, clearTimer })
 </script>
 
 <style lang="scss" scoped>
