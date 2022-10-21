@@ -8,7 +8,7 @@
   <h3 style="text-align: left;">推荐歌单</h3>
   <el-row :gutter="20">
     <el-col :span="4" v-for="item in personalized?.result" :key="item">
-      <div class="personalized-wrapper">
+      <div class="personalized-wrapper" @click="handleLinkDetail(item.id)">
         <el-image :src="item.picUrl"></el-image>
         <div class="personalized-count">
           <el-icon>
@@ -24,9 +24,11 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { VideoPlay } from '@element-plus/icons-vue'
 import { getBanner, getPersonalized, BannerInfo, Personalized } from '../api/home'
 
+const router = useRouter()
 let banner = ref<BannerInfo>()
 let personalized = ref<Personalized>()
 /**
@@ -43,6 +45,12 @@ async function getPersonalizedInfo() {
     limit: 12
   }
   personalized.value = await getPersonalized(params)
+}
+/**
+ * 跳转歌单详情页
+ */
+function handleLinkDetail(playlistId: number) {
+  router.push({ path: '/playlistDetail', query: { playlistId } })
 }
 onMounted(async () => {
   await getBannerInfo()

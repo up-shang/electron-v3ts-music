@@ -8,11 +8,16 @@ export default [
   {
     path: '/singer',
     name: 'singer',
-    component: () => import('../view/singer.vue')
+    component: () => import('../view/Singer.vue')
   },
   {
-    path: '/song',
-    name: 'song',
-    component: () => import('../view/Song.vue')
+    path: '/playlist',
+    name: 'playlist',
+    component: () => import('../view/Playlist.vue')
+  },
+  {
+    path: '/playlistDetail',
+    name: 'playlistDetail',
+    component: () => import('../view/PlaylistDetail.vue')
   }
 ]

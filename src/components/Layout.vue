@@ -12,7 +12,7 @@
         </div>
         <div class="header main">
           <el-button type="primary" link @click="handleLink('home')">个性推荐</el-button>
-          <el-button type="primary" link @click="handleLink('song')">
+          <el-button type="primary" link @click="handleLink('playlist')">
             歌单
           </el-button>
           <el-button type="primary" link>排行榜</el-button>
@@ -42,7 +42,7 @@
 import { Search, ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
 import { nextTick, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import user from '../view/login.vue'
+import user from '../view/Login.vue'
 import { useUserStore } from '../store'
 
 const userStore = useUserStore()
