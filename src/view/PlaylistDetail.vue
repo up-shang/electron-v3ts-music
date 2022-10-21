@@ -1,24 +1,26 @@
 <template>
-  <span>歌单详情</span>
+  <span>{{playlist?.name}}</span>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router';
-import { getPlayListDetail, PlaylistDetail } from '../api/playlist'
+import { getPlayListDetail, Playlist } from '../api/playlist'
 
 const route = useRoute()
+let playlist = ref<Playlist>()
 const playlistId = route.query.playlistId
 
 async function getPlayListDetailInfo() {
-  const res = await getPlayListDetail<PlaylistDetail>({ id: playlistId })
-  console.log(res, '====resplaylist')
-  // songs: res.playlist.tracks,
-  //         songsImg: res.playlist.coverImgUrl,
-  //         songsText: res.playlist.name,
-  //         songsDesc: res.playlist.description.substr(0, 15)
-  //         res.playlist.tags
-  //         res.playlist.playCount
+  const res = await getPlayListDetail({ id: playlistId })
+  playlist.value = {
+    list: res.playlist.tracks,
+    pic: res.playlist.coverImgUrl,
+    name: res.playlist.name,
+    desc: res.playlist.description,
+    tag: res.playlist.tags,
+    count: res.playlist.playCount
+  }
 }
 
 onMounted(async () => {

@@ -5,6 +5,18 @@ enum URL {
 }
 
 export interface PlaylistDetail {
+  playlist: {
+    tracks: object[],
+    playCount: number,
+    coverImgUrl: string,
+    name: string,
+    id: number,
+    tags: string[],
+    description: string
+  }
+}
+
+export interface Playlist {
   list: object[],
   pic: string,
   name: string,
