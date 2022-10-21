@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import user from '../view/login.vue'
 import { useUserStore } from '../store'
@@ -51,12 +51,17 @@ function handleLink(param: string) {
  * 触发二维码扫码登录
  */
 function handleLogin() {
-  // userStore.$patch({ avatar: 'https://p2.music.126.net/lhdp6FTOqNb07O7iJhjIFw==/19118308184364461.jpg' })
   userVisible.value = true
   nextTick(async () => {
     await userInfo.value.login()
   })
 }
+
+onMounted(async () => {
+  if (localStorage.getItem('cookie')) {
+    await userStore.getUserAccountInfo({ cookie: localStorage.getItem('cookie') })
+  }
+})
 </script>
 
 <style lang="scss" scoped>
