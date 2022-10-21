@@ -2,14 +2,22 @@
   <div class="common-layout">
     <el-container>
       <el-header height="50px" class="header">
+        <div class="header left">
+          <el-icon @click="router.go(-1)" class="icon-arrow">
+            <ArrowLeftBold />
+          </el-icon>
+          <el-icon @click="router.go(1)" class="icon-arrow">
+            <ArrowRightBold />
+          </el-icon>
+        </div>
         <div class="header main">
-          <el-button link @click="handleLink('home')">个性推荐</el-button>
-          <el-button link @click="handleLink('song')">
+          <el-button type="primary" link @click="handleLink('home')">个性推荐</el-button>
+          <el-button type="primary" link @click="handleLink('song')">
             歌单
           </el-button>
-          <el-button link>排行榜</el-button>
-          <el-button link @click="handleLink('singer')">歌手</el-button>
-          <el-button link>最新音乐</el-button>
+          <el-button type="primary" link>排行榜</el-button>
+          <el-button type="primary" link @click="handleLink('singer')">歌手</el-button>
+          <el-button type="primary" link>最新音乐</el-button>
         </div>
         <div class="header right">
           <el-input v-model="search" size="small" placeholder="搜索" :prefix-icon="Search" />
@@ -31,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue'
+import { Search, ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
 import { nextTick, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import user from '../view/login.vue'
@@ -86,8 +94,25 @@ onMounted(async () => {
   align-items: center;
   background-color: rgb(249, 247, 247);
 
+  .icon-arrow {
+    width: 30px;
+    height: 30px;
+    margin: 0 8px;
+    color: #409eff;
+    cursor: pointer;
+
+    &:hover {
+      background-color: gray;
+      border-radius: 30px;
+    }
+  }
+
+  &.left {
+    margin-left: 80px;
+  }
+
   &.main {
-    margin-left: 100px;
+    margin-left: 30px;
   }
 
   &.right {
