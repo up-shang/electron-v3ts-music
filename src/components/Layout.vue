@@ -11,13 +11,13 @@
           </el-icon>
         </div>
         <div class="header main">
-          <el-button type="primary" link @click="handleLink('home')">个性推荐</el-button>
-          <el-button type="primary" link @click="handleLink('playlist')">
+          <el-button link @click="handleLink('home')">个性推荐</el-button>
+          <el-button link @click="handleLink('playlist')">
             歌单
           </el-button>
-          <el-button type="primary" link>排行榜</el-button>
-          <el-button type="primary" link @click="handleLink('singer')">歌手</el-button>
-          <el-button type="primary" link>最新音乐</el-button>
+          <el-button link>排行榜</el-button>
+          <el-button link @click="handleLink('singer')">歌手</el-button>
+          <el-button link>最新音乐</el-button>
         </div>
         <div class="header right">
           <el-input v-model="search" size="small" placeholder="搜索" :prefix-icon="Search" />
@@ -98,7 +98,7 @@ onMounted(async () => {
     width: 30px;
     height: 30px;
     margin: 0 8px;
-    color: #409eff;
+    // color: #409eff;
     cursor: pointer;
 
     &:hover {
