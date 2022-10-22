@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <img style="width: 64px;height: 64px;" src="../assets/netease-music.png" />
+  <div class="login-wrapper">
+    <div>
+      <img style="width: 64px;height: 64px;" src="../assets/netease-music.png" />
+    </div>
+    <h2>登录网易云音乐账号</h2>
+    <el-image :src="qrImg"></el-image>
+    <h3>打开网易云音乐APP扫码登录</h3>
   </div>
-  <h2>登录网易云音乐账号</h2>
-  <el-image :src="qrImg"></el-image>
-  <h3>打开网易云音乐APP扫码登录</h3>
 </template>
 
 <script setup lang="ts">
@@ -59,6 +61,7 @@ async function login() {
       // 这一步会返回cookie
       clearInterval(timer)
       alert('授权登录成功')
+      // todo，授权成功后关闭弹层
       localStorage.setItem('cookie', statusRes.cookie)
       await userStore.getUserAccountInfo({ cookie: statusRes.cookie })
     }
@@ -71,5 +74,9 @@ defineExpose({ login, clearTimer })
 </script>
 
 <style lang="scss" scoped>
-
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 </style>
