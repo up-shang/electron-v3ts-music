@@ -1,6 +1,6 @@
 {
-  "name": "electron-vue-vite",
-  "version": "2.1.0",
+  "name": "music",
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "Really simple Electron + Vue + Vite boilerplate.",
   "author": "shangs",
