@@ -14,7 +14,7 @@
           <el-icon>
             <VideoPlay />
           </el-icon>
-          <span>{{(Math.ceil(item.playCount / 10000)) + '万'}}</span>
+          <span>{{formatNum(item.playCount)}}</span>
         </div>
         <p class="personalized-label">{{item.name}}</p>
       </div>
@@ -27,6 +27,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { VideoPlay } from '@element-plus/icons-vue'
 import { getBanner, getPersonalized, BannerInfo, Personalized } from '../api/home'
+import { formatNum } from '../utils'
 
 const router = useRouter()
 let banner = ref<BannerInfo>()

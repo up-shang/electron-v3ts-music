@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { resolve } from 'path-browserify'; // vite不允许使用path,此处使用path-browserify替代
 const fs = require('fs');
 
 function pathResolve(dir: string) {
@@ -17,3 +17,13 @@ export const getFolder = (path: any) => {
   });
   return components;
 };
+
+export function formatNum(num: number) {
+  let res: string
+  if (num / 10000 >= 10000) {
+    res = Math.ceil(num / 10000 / 10000) + '亿'
+  } else {
+    res = Math.ceil(num / 10000) + '万'
+  }
+  return res
+}
