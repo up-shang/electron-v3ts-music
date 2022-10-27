@@ -16,6 +16,7 @@
   "devDependencies": {
     "@electron/remote": "^2.0.8",
     "@element-plus/icons-vue": "^2.0.10",
+    "@types/howler": "^2.2.7",
     "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
     "@vitejs/plugin-vue": "^3.1.2",
@@ -26,6 +27,7 @@
     "electron": "^21.1.0",
     "electron-builder": "^23.3.3",
     "element-plus": "^2.2.18",
+    "howler": "^2.2.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
