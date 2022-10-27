@@ -35,7 +35,7 @@
     <el-dialog v-model="userVisible" :show-close="false" @close="handleClearTimer">
       <user ref="userInfo"></user>
     </el-dialog>
-
+    <Player></Player>
   </div>
 </template>
 
@@ -45,6 +45,7 @@ import { nextTick, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import user from '../view/Login.vue'
 import { useUserStore } from '../store'
+import Player from '../components/Player.vue'
 
 const userStore = useUserStore()
 
