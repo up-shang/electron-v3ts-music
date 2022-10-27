@@ -1,9 +1,12 @@
 import { rmSync } from 'fs'
+import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-electron-plugin'
 import { customStart } from 'vite-electron-plugin/plugin'
 import pkg from './package.json'
+
+import { createSvg } from "./src/icons/index";
 
 rmSync('dist-electron', { recursive: true, force: true })
 
@@ -11,6 +14,7 @@ rmSync('dist-electron', { recursive: true, force: true })
 export default defineConfig({
   plugins: [
     vue(),
+    createSvg("./src/icons/svg/"),
     electron({
       include: ['electron'],
       transformOptions: {
@@ -22,6 +26,11 @@ export default defineConfig({
         : undefined,
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve("./src"), // 相对路径别名配置，使用 @ 代替 src
+    },
+  },
   server: process.env.VSCODE_DEBUG ? (() => {
     const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
     return {

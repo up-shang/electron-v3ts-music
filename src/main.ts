@@ -5,6 +5,8 @@ import piniaStore from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
+import globalCom from './components'
+
 /**
  * If you enables use of Node.js API in the Renderer-process
  * ```
@@ -17,6 +19,7 @@ createApp(App)
   .use(router)
   .use(piniaStore)
   .use(ElementPlus)
+  .use(globalCom)
   .mount('#app')
   .$nextTick(() => {
     postMessage({ payload: 'removeLoading' }, '*')
