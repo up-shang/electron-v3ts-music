@@ -14,9 +14,9 @@
           <el-icon>
             <VideoPlay />
           </el-icon>
-          <span>{{formatNum(item.playCount)}}</span>
+          <span>{{             formatNum(item.playCount)             }}</span>
         </div>
-        <p class="personalized-label">{{item.name}}</p>
+        <p class="personalized-label">{{             item.name             }}</p>
       </div>
     </el-col>
   </el-row>
