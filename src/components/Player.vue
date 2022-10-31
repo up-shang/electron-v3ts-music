@@ -66,10 +66,8 @@
         <img ref="playerPic" class="player-pic" :src="playerStore.picUrl" />
         <scroll class="lyric-wrapper" ref="lyricList" :data="lyric && lyric.lines">
           <div>
-            <div style="overflow-y: auto;">
-              <p v-for="(line, index) in lyric.lines" ref="lyricLine"
-                :class="{ 'lyric-current': currentLyricNum === index }" class="lyric-text">{{ line.txt }}</p>
-            </div>
+            <p v-for="(line, index) in lyric.lines" ref="lyricLine"
+              :class="{ 'lyric-current': currentLyricNum === index }" class="lyric-text">{{ line.txt }}</p>
           </div>
         </scroll>
       </div>
@@ -269,9 +267,10 @@ function handleChangeVolume(val: number) {
 
   .lyric-wrapper {
     flex: 1;
-    height: 500px;
+    height: 100%;
     text-align: center;
     align-self: flex-start;
+    overflow-y: hidden;
   }
 
   .player-pic {
