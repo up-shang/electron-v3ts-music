@@ -138,9 +138,9 @@ function lyricHandle(params: any) {
  */
 function handleOpen() {
   playerDetailVisible.value = true
-  nextTick(() => {
+  setTimeout(() => {
     lyric.value.seek(player.value.progress * 1000)
-  })
+  }, 1000);
 }
 /**
  * 关闭抽屉
