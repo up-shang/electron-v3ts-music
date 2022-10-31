@@ -64,39 +64,89 @@
     <template #default>
       <div class="player-detail">
         <img ref="playerPic" class="player-pic" :src="playerStore.picUrl" />
-        <div class="player-lyric"></div>
+        <scroll class="lyric-wrapper" ref="lyricList" :data="lyric && lyric.lines">
+          <div>
+            <div style="overflow-y: auto;">
+              <p v-for="(line, index) in lyric.lines" ref="lyricLine"
+                :class="{ 'lyric-current': currentLyricNum === index }" class="lyric-text">{{ line.txt }}</p>
+            </div>
+          </div>
+        </scroll>
       </div>
     </template>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { ArrowDownBold } from '@element-plus/icons-vue'
 import { usePlayerStore } from '../store'
-import { Track } from '../api/track'
+import { Track, getLyric } from '../api/track'
+import Lyric from 'lyric-parser'
 import Player from '../utils/player'
+import Scroll from '../components/BetterScroll/BetterScroll.vue'
 import _ from 'lodash'
 
-const player = ref<any>(new Player())
+const player = ref<any>(new Player()) // 播放器
+let lyric = ref<any>() // 歌词解析器
+let lyricList = ref<any>() // 歌词滚动器
+let lyricLine = ref<any>() // 歌词行元素
 const playerStore = usePlayerStore()
 let playlistIconColor = ref<string>('gray')
 let volumeIconColor = ref<string>('gray')
 
 let playerDetailVisible = ref<boolean>(false) // 是否弹出歌曲封面、歌词详情
 let playerPic = ref() // 封面ref
+let currentLyricNum = ref<number>(0) // 当前播放歌词行号
 
 watch(() => playerStore.url, (newValue) => {
   if (newValue) {
-    player.value.current = playerStore.list?.indexOf(newValue)
-    player.value.playAudioSource([newValue])
-    player.value.play()
+    player.value.current = playerStore.list?.indexOf(newValue) // 设置当前播放歌曲index
+    getLyricInfo(playerStore.id) // 获取与初始化歌词滚动
+    player.value.playAudioSource([newValue]) // 初始化howler
+    player.value.play() //播放歌曲
   }
 })
+/**
+ * 获取歌曲的歌词
+ */
+async function getLyricInfo(songId: number) {
+  const res = await getLyric({ id: songId })
+  if (lyric.value) lyric.value.stop()
+  lyric.value = new Lyric(res?.lrc?.lyric, lyricHandle)
+  handleOpen()
+}
+/**
+ * 歌词回调
+ * play后执行，按照切割后的时间返回当前行lineNum与txt
+ * @param params 
+ */
+function lyricHandle(params: any) {
+  const { lineNum, txt } = params // 当前行， 当前行文本
+  currentLyricNum.value = lineNum
+  // 若当前行大于10,开始滚动,以保歌词显示于中间位置  
+  if (lineNum > 7) {
+    let lineEl = lyricLine.value[lineNum - 7]
+    // 结合better-scroll，滚动歌词  
+    lyricList.value.scrollToElement(lineEl, 1000) // ele, speed
+  } else {
+    lyricList.value.scrollToElement(0, 0, 1000)
+  }
+}
+/**
+ * 打开抽屉
+ */
 function handleOpen() {
   playerDetailVisible.value = true
+  nextTick(() => {
+    lyric.value.seek(player.value.progress * 1000)
+  })
 }
+/**
+ * 关闭抽屉
+ */
 function handleClose() {
+  lyric.value.stop()
   playerDetailVisible.value = false
 }
 /**
@@ -104,23 +154,36 @@ function handleClose() {
  * @param seek 
  */
 function handleChangeSeek(seek: number) {
-  _.debounce(() => {
+  _.debounce(() => { // 防止多次触发
     player.value.seek(seek)
   }, 1000)
+  lyric.value.stop()
+  setTimeout(() => {
+    lyric.value.seek(player.value.progress * 1000)
+  }, 1000);
 }
-
+/**
+ * 上一首
+ */
 function handlePlayPreTrack() {
   player.value._preTrackCallback()
 }
-
+/**
+ * 下一首
+ */
 function handlePlayNextTrack() {
   player.value._nextTrackCallback()
 }
+/**
+ * 播放or暂停
+ */
 function playOrPause() {
   if (player.value.playing) {
     playerPic.value.style.animationPlayState = 'paused'
+    if (lyricLine.value) lyric.value.togglePlay()
   } else {
     playerPic.value.style.animationPlayState = 'running'
+    if (lyricLine.value) lyric.value.togglePlay()
   }
   player.value.playOrPause()
 }
@@ -188,6 +251,14 @@ function handleChangeVolume(val: number) {
   height: 2px;
 }
 
+.lyric-current {
+  color: #d81e06;
+}
+
+.lyric-text {
+  font-size: 14px;
+}
+
 .player-detail {
   width: 100%;
   height: 100%;
@@ -196,6 +267,13 @@ function handleChangeVolume(val: number) {
   align-items: center;
   margin-top: -48px;
 
+  .lyric-wrapper {
+    flex: 1;
+    height: 500px;
+    text-align: center;
+    align-self: flex-start;
+  }
+
   .player-pic {
     width: 200px;
     height: 200px;
@@ -203,7 +281,7 @@ function handleChangeVolume(val: number) {
     outline: 50px solid black;
     animation: audio-img-360 60s linear infinite;
     animation-play-state: running;
-    margin-left: 50px;
+    margin-left: 80px;
   }
 
   @keyframes audio-img-360 {
@@ -214,10 +292,6 @@ function handleChangeVolume(val: number) {
     100% {
       transform: rotate(360deg);
     }
-  }
-
-  .player-lyric {
-    flex: 1
   }
 }
 

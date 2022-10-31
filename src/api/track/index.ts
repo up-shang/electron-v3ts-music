@@ -1,7 +1,8 @@
 import { get } from '../../utils/http/axios'
 
 enum URL {
-  track = '/song/url' // 歌单详情
+  track = '/song/url', // 歌单详情
+  lyric = '/lyric' //获取歌词
 }
 export interface TrackList {
   list: any[]
@@ -23,4 +24,5 @@ export interface Track {
 }
 
 const getTrackInfo = async (params: { id: number }) => get<any>({ url: URL.track, params })
-export { getTrackInfo }
+const getLyric = async (params: { id: number }) => get<any>({ url: URL.lyric, params })
+export { getTrackInfo, getLyric }
