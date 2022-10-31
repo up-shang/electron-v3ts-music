@@ -3,7 +3,7 @@
     <el-slider v-model="player.progress" :max="playerStore.duration" @input="handleChangeSeek" :show-tooltip="false" />
     <el-row class="row-class">
       <el-col :span="8" class="col-class col-1">
-        <img class="col-img" :src="playerStore.picUrl" />
+        <img @click="handleOpen" class="col-img" :src="playerStore.picUrl" />
         <div class="col-1-content">
           <div>
             {{ playerStore.name }}&nbsp;-&nbsp;<span style="color: gray">{{ playerStore.ar }}</span>
@@ -54,12 +54,26 @@
       </el-col>
     </el-row>
   </div>
+  <!--封面、歌词抽屉-->
+  <el-drawer v-model="playerDetailVisible" size="100%" direction="btt" :show-close="false">
+    <template #header>
+      <el-icon style="justify-content: flex-start;cursor: pointer;">
+        <ArrowDownBold @click="handleClose" />
+      </el-icon>
+    </template>
+    <template #default>
+      <div class="player-detail">
+        <img ref="playerPic" class="player-pic" :src="playerStore.picUrl" />
+        <div class="player-lyric"></div>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { ArrowDownBold } from '@element-plus/icons-vue'
 import { usePlayerStore } from '../store'
-import { VideoPlay } from '@element-plus/icons-vue'
 import { Track } from '../api/track'
 import Player from '../utils/player'
 import _ from 'lodash'
@@ -69,6 +83,9 @@ const playerStore = usePlayerStore()
 let playlistIconColor = ref<string>('gray')
 let volumeIconColor = ref<string>('gray')
 
+let playerDetailVisible = ref<boolean>(false) // 是否弹出歌曲封面、歌词详情
+let playerPic = ref() // 封面ref
+
 watch(() => playerStore.url, (newValue) => {
   if (newValue) {
     player.value.current = playerStore.list?.indexOf(newValue)
@@ -76,7 +93,16 @@ watch(() => playerStore.url, (newValue) => {
     player.value.play()
   }
 })
-
+function handleOpen() {
+  playerDetailVisible.value = true
+}
+function handleClose() {
+  playerDetailVisible.value = false
+}
+/**
+ * 快进快退歌曲
+ * @param seek 
+ */
 function handleChangeSeek(seek: number) {
   _.debounce(() => {
     player.value.seek(seek)
@@ -91,6 +117,11 @@ function handlePlayNextTrack() {
   player.value._nextTrackCallback()
 }
 function playOrPause() {
+  if (player.value.playing) {
+    playerPic.value.style.animationPlayState = 'paused'
+  } else {
+    playerPic.value.style.animationPlayState = 'running'
+  }
   player.value.playOrPause()
 }
 
@@ -157,13 +188,46 @@ function handleChangeVolume(val: number) {
   height: 2px;
 }
 
+.player-detail {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -48px;
+
+  .player-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    outline: 50px solid black;
+    animation: audio-img-360 60s linear infinite;
+    animation-play-state: running;
+    margin-left: 50px;
+  }
+
+  @keyframes audio-img-360 {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .player-lyric {
+    flex: 1
+  }
+}
+
 .player-wrapper {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   height: 68px;
-  z-index: 99;
+  z-index: 9999;
   // border-top: 2px solid #eee;
   background-color: #fff;
 
