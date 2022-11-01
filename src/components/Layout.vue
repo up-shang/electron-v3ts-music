@@ -41,19 +41,30 @@
 
 <script setup lang="ts">
 import { Search, ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { nextTick, ref, onMounted } from 'vue'
+import { nextTick, ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import user from '../view/Login.vue'
-import { useUserStore } from '../store'
+import { useUserStore, usePlayerStore } from '../store'
 import Player from '../components/Player.vue'
 
 const userStore = useUserStore()
+const playerStore = usePlayerStore()
+
+let mainMr = ref<string>('') // 底部外边距
+let mainHeight = ref<string>('') // 高度
+
+mainMr.value = playerStore.url ? '50px' : '0px'
+mainHeight.value = playerStore.url ? '120px' : '50px'
 
 const router = useRouter()
 const search = ref<string>('')
 let userInfo = ref()
 let userVisible = ref<boolean>(false)
 
+watch(() => playerStore.url, (newValue) => {
+  mainMr.value = '50px'
+  mainHeight.value = '120px'
+})
 function handleLink(param: string) {
   router.push({ name: param })
 }
@@ -134,6 +145,7 @@ onMounted(async () => {
 }
 
 .el-main {
-  height: calc(100vh - 50px);
+  height: calc(100vh - v-bind(mainHeight));
+  margin-bottom: v-bind(mainMr);
 }
 </style>

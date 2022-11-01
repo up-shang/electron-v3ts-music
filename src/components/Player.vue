@@ -1,5 +1,5 @@
 <template>
-  <div class="player-wrapper">
+  <div class="player-wrapper" v-if="(playerStore.list as Array<number | undefined>).length > 0">
     <el-slider v-model="player.progress" :max="playerStore.duration" @input="handleChangeSeek" :show-tooltip="false" />
     <el-row class="row-class">
       <el-col :span="8" class="col-class col-1">
@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 import { ArrowDownBold } from '@element-plus/icons-vue'
 import { usePlayerStore } from '../store'
 import { Track, getLyric } from '../api/track'
