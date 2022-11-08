@@ -2,7 +2,7 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "productName": "真真音乐",
+  "productName": "狗狗音乐",
   "appId": "YourAppID",
   "asar": true,
   "directories": {
@@ -14,7 +14,7 @@
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
-    "icon": "public/music.png",
+    "icon": "public/song.png",
     "target": [
       "dmg"
     ]
