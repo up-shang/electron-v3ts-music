@@ -10,9 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 import { loginCheck, loginQrKey, loginQr, loginStatus } from '../api/user'
 import { useUserStore } from '../store'
+import emiter from '../utils/bus'
 
 const userStore = useUserStore()
 // const props = withDefaults(defineProps<Prop>(), { visible: false })
@@ -25,7 +26,8 @@ let timer: any
  */
 async function checkStatus(key: any) {
   const params = {
-    key
+    key,
+    timestamp: Date.now() // 防止缓存扫码登录状态
   }
   const res = await loginCheck(params)
   return res
@@ -64,6 +66,7 @@ async function login() {
       // todo，授权成功后关闭弹层
       localStorage.setItem('cookie', statusRes.cookie)
       await userStore.getUserAccountInfo({ cookie: statusRes.cookie })
+      emiter.emit('closeLogin', false)
     }
   }, 3000)
 }

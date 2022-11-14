@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { ref, withDefaults, onMounted, watch } from 'vue'
 import BScroll from 'better-scroll'
-import emiter from './index'
+import emiter from '../../utils/bus'
 
 let wrapper = ref()
 let scroll = ref()

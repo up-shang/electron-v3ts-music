@@ -46,6 +46,7 @@ import { useRouter } from 'vue-router'
 import user from '../view/Login.vue'
 import { useUserStore, usePlayerStore } from '../store'
 import Player from '../components/Player.vue'
+import emiter from '../utils/bus'
 
 const userStore = useUserStore()
 const playerStore = usePlayerStore()
@@ -85,10 +86,19 @@ function handleClearTimer() {
     await userInfo.value.clearTimer()
   })
 }
+/**
+ * 扫码登录成功后，关闭扫码弹窗页面
+ */
+function handleCloseLogin(flag: boolean) {
+  userVisible.value = flag
+}
 onMounted(async () => {
   if (localStorage.getItem('cookie')) {
     await userStore.getUserAccountInfo({ cookie: localStorage.getItem('cookie') })
   }
+  emiter.on('closeLogin', (res: any) => {
+    handleCloseLogin(res)
+  })
 })
 </script>
 
