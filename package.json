@@ -29,7 +29,7 @@
     "dayjs": "^1.11.5",
     "electron": "^21.1.0",
     "electron-builder": "^23.3.3",
-    "element-plus": "^2.2.18",
+    "element-plus": "^2.2.32",
     "howler": "^2.2.3",
     "lyric-parser": "^1.0.1",
     "mitt": "^3.0.0",
